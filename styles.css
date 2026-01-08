@@ -1,4 +1,4 @@
-"/* Root Variables - Dark Theme */
+/* Root Variables - Dark Theme */
 :root {
   --bg-primary: #000000;
   --bg-secondary: #121212;
@@ -802,4 +802,3 @@ body {
   .orb-2 { width: 200px; height: 200px; }
   .orb-3 { width: 150px; height: 150px; }
 }
-"
