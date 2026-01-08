@@ -1,4 +1,4 @@
-"// Smooth scroll function
+// Smooth scroll function
 function scrollToSection(sectionId) {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -26,7 +26,11 @@ function filterPortfolio(category) {
     
     // Update active button
     buttons.forEach(btn => btn.classList.remove('filter-btn-active'));
-    event.target.classList.add('filter-btn-active');
+    
+    // Safety check for event target
+    if (window.event) {
+        window.event.target.classList.add('filter-btn-active');
+    }
     
     // Filter cards
     cards.forEach(card => {
@@ -41,7 +45,10 @@ function filterPortfolio(category) {
 // Contact form handling
 document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    const yearElement = document.getElementById('currentYear');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
     
     // Contact form submission
     const contactForm = document.getElementById('contactForm');
@@ -55,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get form data
             const formData = new FormData(contactForm);
             
-            // Show loading state (optional)
-            const submitButton = contactForm.querySelector('button[type=\"submit\"]');
+            // Show loading state
+            const submitButton = contactForm.querySelector('button[type="submit"]');
             const originalText = submitButton.textContent;
             submitButton.textContent = 'Sending...';
             submitButton.disabled = true;
@@ -64,36 +71,36 @@ document.addEventListener('DOMContentLoaded', function() {
             // Send form data using fetch
             fetch(contactForm.action, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                if (response.ok) {
+                    // Hide form and show success message
+                    contactForm.style.display = 'none';
+                    successMessage.style.display = 'flex';
+                    
+                    // Reset form and show it again after 3 seconds
+                    setTimeout(() => {
+                        contactForm.reset();
+                        contactForm.style.display = 'flex';
+                        successMessage.style.display = 'none';
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    }, 3000);
+                } else {
+                    throw new Error('Response not ok');
                 }
-                return response.text();
-            })
-            .then(data => {
-                // Hide form and show success message
-                contactForm.style.display = 'none';
-                successMessage.style.display = 'flex';
-                
-                // Reset form and show it again after 3 seconds
-                setTimeout(() => {
-                    contactForm.reset();
-                    contactForm.style.display = 'flex';
-                    successMessage.style.display = 'none';
-                    submitButton.textContent = originalText;
-                    submitButton.disabled = false;
-                }, 3000);
             })
             .catch(error => {
                 // Show error message
-                errorMessage.textContent = 'Failed to send message. Please try again or contact us directly at contact@hallen.ro';
+                errorMessage.textContent = 'Failed to send message. Please try again or contact us directly.';
                 errorMessage.style.display = 'block';
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
-                // Hide error after 5 seconds
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
                 }, 5000);
@@ -101,20 +108,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add scroll animation for header
-    let lastScroll = 0;
+    // Header shadow on scroll
     const header = document.getElementById('header');
-    
     window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll > 100) {
+        if (window.pageYOffset > 100) {
             header.style.boxShadow = '0 2px 10px rgba(0, 255, 209, 0.1)';
         } else {
             header.style.boxShadow = 'none';
         }
-        
-        lastScroll = currentScroll;
     });
 });
-"
