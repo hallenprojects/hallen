@@ -27,8 +27,8 @@ function filterPortfolio(category) {
     // Update active button
     buttons.forEach(btn => btn.classList.remove('filter-btn-active'));
     
-    // Safety check for event target
-    if (window.event) {
+    // Am adaugat verificarea pentru window.event ca sa functioneze corect in toate browserele
+    if (window.event && window.event.target) {
         window.event.target.classList.add('filter-btn-active');
     }
     
@@ -45,9 +45,9 @@ function filterPortfolio(category) {
 // Contact form handling
 document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
-    const yearElement = document.getElementById('currentYear');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('currentYear');
+    if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
     }
     
     // Contact form submission
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get form data
             const formData = new FormData(contactForm);
             
-            // Show loading state
+            // Show loading state (optional)
             const submitButton = contactForm.querySelector('button[type="submit"]');
             const originalText = submitButton.textContent;
             submitButton.textContent = 'Sending...';
@@ -71,36 +71,36 @@ document.addEventListener('DOMContentLoaded', function() {
             // Send form data using fetch
             fetch(contactForm.action, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                body: formData
             })
             .then(response => {
-                if (response.ok) {
-                    // Hide form and show success message
-                    contactForm.style.display = 'none';
-                    successMessage.style.display = 'flex';
-                    
-                    // Reset form and show it again after 3 seconds
-                    setTimeout(() => {
-                        contactForm.reset();
-                        contactForm.style.display = 'flex';
-                        successMessage.style.display = 'none';
-                        submitButton.textContent = originalText;
-                        submitButton.disabled = false;
-                    }, 3000);
-                } else {
-                    throw new Error('Response not ok');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
+                return response.text();
+            })
+            .then(data => {
+                // Hide form and show success message
+                contactForm.style.display = 'none';
+                successMessage.style.display = 'flex';
+                
+                // Reset form and show it again after 3 seconds
+                setTimeout(() => {
+                    contactForm.reset();
+                    contactForm.style.display = 'flex';
+                    successMessage.style.display = 'none';
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                }, 3000);
             })
             .catch(error => {
                 // Show error message
-                errorMessage.textContent = 'Failed to send message. Please try again or contact us directly.';
+                errorMessage.textContent = 'Failed to send message. Please try again or contact us directly at contact@hallen.ro';
                 errorMessage.style.display = 'block';
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
+                // Hide error after 5 seconds
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
                 }, 5000);
@@ -108,13 +108,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Header shadow on scroll
+    // Add scroll animation for header
+    let lastScroll = 0;
     const header = document.getElementById('header');
+    
     window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 100) {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 100) {
             header.style.boxShadow = '0 2px 10px rgba(0, 255, 209, 0.1)';
         } else {
             header.style.boxShadow = 'none';
         }
+        
+        lastScroll = currentScroll;
     });
 });
