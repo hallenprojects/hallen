@@ -49,6 +49,32 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentYearSpace) {
         currentYearSpace.textContent = new Date().getFullYear();
     }
+
+    // Add ripple effect to interactive buttons
+    function createRipple(e) {
+        const btn = e.currentTarget || e.target;
+        const circle = document.createElement('span');
+        circle.className = 'ripple';
+        const d = Math.max(btn.clientWidth, btn.clientHeight);
+        circle.style.width = circle.style.height = d + 'px';
+        const rect = btn.getBoundingClientRect();
+        circle.style.left = (e.clientX - rect.left - d / 2) + 'px';
+        circle.style.top = (e.clientY - rect.top - d / 2) + 'px';
+        btn.appendChild(circle);
+        setTimeout(() => {
+            circle.remove();
+        }, 600);
+    }
+
+    const interactiveButtons = document.querySelectorAll('.btn-primary, .btn-secondary, .filter-btn, .dark-nav-link, .mobile-nav-link, .footer-link');
+    interactiveButtons.forEach(b => {
+        b.addEventListener('click', createRipple);
+        b.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                createRipple(e);
+            }
+        });
+    });
     
     // Contact form submission
     // Contact form submission
