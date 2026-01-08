@@ -81,16 +81,22 @@ body {
 }
 
 /* Button Styles */
+.button-base, .btn-primary, .btn-secondary, .filter-btn, .dark-nav-link, .mobile-nav-link, .footer-link {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
 .btn-primary {
-  background: var(--brand-primary);
+  --ripple-color: rgba(0,0,0,0.12);
+  background: linear-gradient(90deg, var(--brand-primary), var(--brand-active));
   color: #000000;
   border: none;
-  border-radius: 0px;
   padding: 14px 24px;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s ease-in-out;
   min-height: 56px;
   text-decoration: none;
   display: inline-flex;
@@ -98,30 +104,55 @@ body {
   justify-content: center;
   gap: 12px;
   font-family: var(--font-primary);
+  box-shadow: 0 6px 18px rgba(0,255,209,0.12);
 }
 
 .btn-primary:hover {
-  background: var(--brand-hover);
-  color: var(--brand-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(0,255,209,0.18);
+  opacity: 0.98;
+}
+
+.btn-primary:focus {
+  outline: 3px solid rgba(0,255,209,0.12);
+  outline-offset: 4px;
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
+  --ripple-color: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.06);
   color: #FFFFFF;
-  border: none;
-  border-radius: 0px;
-  padding: 14px 24px;
-  font-size: 18px;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 12px 20px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.4s ease-in-out;
-  min-height: 56px;
+  min-height: 50px;
   font-family: var(--font-primary);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
 }
 
 .btn-secondary:hover {
-  background: #FFFFFF;
-  color: #000000;
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.12);
+  color: #FFFFFF;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  pointer-events: none;
+  background: var(--ripple-color, rgba(255,255,255,0.2));
+  opacity: 0.7;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(20);
+    opacity: 0;
+  }
 }
 
 /* Header Navigation */
@@ -375,26 +406,33 @@ body {
 }
 
 .filter-btn {
-  background: rgba(255, 255, 255, 0.1);
+  --ripple-color: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
   color: var(--text-muted);
-  border: 1px solid var(--border-subtle);
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
   font-family: var(--font-primary);
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
 .filter-btn:hover {
   color: var(--text-primary);
+  transform: translateY(-3px);
   border-color: var(--brand-primary);
+  box-shadow: 0 10px 28px rgba(0,255,209,0.06);
 }
 
 .filter-btn-active {
-  background: var(--brand-primary);
+  background: linear-gradient(90deg, var(--brand-primary), var(--brand-active));
   color: #000000;
-  border-color: var(--brand-primary);
+  border-color: transparent;
+  box-shadow: 0 14px 36px rgba(0,255,209,0.14);
+  transform: translateY(-3px) scale(1.02);
 }
 
 .portfolio-grid {
