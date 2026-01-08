@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Contact form submission
+    // Contact form submission
     const contactForm = document.getElementById('contactForm');
     const successMessage = document.getElementById('successMessage');
     const errorMessage = document.getElementById('errorMessage');
@@ -59,52 +60,46 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form data
             const formData = new FormData(contactForm);
-            
-            // Show loading state
-            // Corecție: Am scos backslash-ul de la [type="submit"]
             const submitButton = contactForm.querySelector('button[type="submit"]');
             const originalText = submitButton.textContent;
+            
             submitButton.textContent = 'Sending...';
             submitButton.disabled = true;
             
-            // Send form data using fetch
+            // Trimitem datele către Formspree folosind FETCH
             fetch(contactForm.action, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(data => {
-                // Hide form and show success message
-                contactForm.style.display = 'none';
-                successMessage.style.display = 'flex';
-                
-                // Reset form and show it again after 3 seconds
-                setTimeout(() => {
+                if (response.ok) {
+                    // Dacă totul e ok, ascundem formularul și arătăm succesul
+                    contactForm.style.display = 'none';
+                    successMessage.style.display = 'flex';
                     contactForm.reset();
-                    contactForm.style.display = 'flex';
-                    successMessage.style.display = 'none';
-                    submitButton.textContent = originalText;
-                    submitButton.disabled = false;
-                }, 3000);
+                } else {
+                    throw new Error('Oops! A apărut o problemă la trimitere.');
+                }
             })
             .catch(error => {
-                // Show error message
-                errorMessage.textContent = 'Failed to send message. Please try again or contact us directly at contact@hallen.ro';
+                errorMessage.textContent = 'Eroare! Te rugăm să ne contactezi direct la contact@hallen.ro';
                 errorMessage.style.display = 'block';
+            })
+            .finally(() => {
                 submitButton.textContent = originalText;
                 submitButton.disabled = false;
                 
-                // Hide error after 5 seconds
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
+                // Opțional: revenim la formular după 5 secunde
+                if (successMessage.style.display === 'flex') {
+                    setTimeout(() => {
+                        contactForm.style.display = 'flex';
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                }
             });
         });
     }
@@ -127,3 +122,4 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScroll = currentScroll;
     });
 });
+
