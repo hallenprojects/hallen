@@ -42,16 +42,16 @@ body {
 }
 
 .logo-mark {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .logo-svg {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   display: block;
 }
 
