@@ -58,7 +58,7 @@ body {
 .logo-hex-ring {
   transform-origin: 50% 50%;
   animation: logoRotate 20s linear infinite;
-  transform: scale(2.1);
+  transform: scale(5.1);
 }
 
 .logo-server {
@@ -939,6 +939,7 @@ body {
   .orb-2 { width: 200px; height: 200px; }
   .orb-3 { width: 150px; height: 150px; }
 }
+
 
 
 
