@@ -41,6 +41,29 @@ body {
   cursor: pointer;
 }
 
+.logo-mark {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-svg {
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+
+.logo-hex-ring {
+  transform-origin: 50% 50%;
+  animation: logoRotate 20s linear infinite;
+}
+
+.logo-server {
+  filter: drop-shadow(0 0 8px rgba(0, 255, 209, 0.35));
+}
+
 .logo-geometric {
   position: relative;
   width: 36px;
