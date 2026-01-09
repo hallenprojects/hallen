@@ -64,7 +64,7 @@ body {
 .logo-server {
   filter: drop-shadow(0 0 8px rgba(0, 255, 209, 0.35));
   transform-origin: 50% 50%;
-  transform: translateY(-4px) scale(0.84);
+  transform: translateY(-5px) scale(0.84);
 }
 
 .logo-geometric {
@@ -939,6 +939,7 @@ body {
   .orb-2 { width: 200px; height: 200px; }
   .orb-3 { width: 150px; height: 150px; }
 }
+
 
 
 
